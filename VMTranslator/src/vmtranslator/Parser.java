@@ -20,6 +20,10 @@ public class Parser {
     private String currentCommand = null;
     private String nextCommand = null;
     
+    public String getCommand(){
+        return currentCommand;
+    }
+    
     // Opens the input file and gets ready 
     // to parser it
     public Parser(String path) throws FileNotFoundException, IOException{
@@ -35,6 +39,8 @@ public class Parser {
             nextCommand = probNext;
             return true;
         }else{
+            br.close();
+            fr.close();
             return false;
         }
     }
@@ -100,6 +106,8 @@ public class Parser {
     // C_POP, C_FUNCTION, or C_CALL.
     public int arg2(){
         String[] tokens = currentCommand.split(" ");
-        return Integer.parseInt(tokens[3]);
+        return Integer.parseInt(tokens[2]);
     }
+    
+  
 }

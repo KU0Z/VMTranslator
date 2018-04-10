@@ -51,4 +51,45 @@ public class Template {
                 "A=M-1\n" +
                 "M="+op+"M\n";
     }
+    
+    // PushConstant template
+    public static String PushConstant(int constant){
+        return "@"+ constant + "\n" +
+                "D=A\n" +
+                "@SP\n" +
+                "A=M\n" +
+                "M=D\n" +
+                "@SP\n" +
+                "M=M+1\n";
+    }
+    
+    // Push for any memory segment
+    public static String Push(String segment, int constant){
+        return "@"+segment+"\n" +
+                "A=M\n" +
+                "D=A\n" +
+                "@"+constant+"\n" +
+                "D=D+A\n" +
+                "A=D\n" +
+                "D=M\n" +
+                "@SP\n" +
+                "A=M\n" +
+                "M=D\n" +
+                "@SP\n" +
+                "M=M+1\n";
+    }
+    
+    // Pop for any memory segment
+    public static String Pop(String segment, int constant){
+        return "@"+segment+"\n" +
+                "D=M\n" +
+                "@"+constant+"\n" +
+                "D=D+A\n" +
+                "@SP\n" +
+                "AM=M-1\n" +
+                "D=M\n" +
+                "@R13\n" +
+                "A=M\n" +
+                "M=D";
+    }
 }
