@@ -18,18 +18,29 @@ public class VMTranslator {
      */
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
-        String inputPath = "C:\\Users\\Maynor\\Desktop\\Arqui\\Grupo_00-grupo_10-cf15225bdcb7361465c6d6685a4ac392824cabbc\\nand2tetris\\projects\\07\\StackArithmetic\\SimpleAdd\\SimpleAdd.vm";
+        String inputPath = "C:\\Users\\Maynor\\Desktop\\Arqui\\Grupo_00-grupo_10-cf15225bdcb7361465c6d6685a4ac392824cabbc\\nand2tetris\\projects\\07\\MemoryAccess\\BasicTest\\BasicTest.vm";
         Parser p = new Parser(inputPath);
         CodeWriter cw = new CodeWriter(inputPath+".txt");
         
-        while(p.hasMoreCommands()){
+        int commandNumber = 0;
+        
+        do{
             if(p.commandType()==CommandType.C_ARITHMETIC){
-                cw.writeArithmetic(p.getCommand());
+               cw.bw.append("// "+p.getCommand()+"\n");        
+
+               cw.writeArithmetic(p.getCommand(), commandNumber++);
             }else if(p.commandType()==CommandType.C_PUSH || p.commandType()==CommandType.C_POP){
+                cw.bw.append("// "+p.getCommand()+"\n");
                 cw.WritePushPop(p.commandType(), p.arg1(), p.arg2());
             }
-            p.advance();
-        }
+            if(p.hasMoreCommands()){
+                p.advance();
+            }else{
+                break;
+            }
+        }while(true);
+        
+       
         cw.Close();
     }
     

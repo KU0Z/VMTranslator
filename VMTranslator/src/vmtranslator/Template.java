@@ -21,7 +21,7 @@ public class Template {
     }
     
     // Comparison Template
-    public static String Comparison(String op){
+    public static String Comparison(String op, int cNum){
         return "@SP\n" +
                 "M=M-1\n" +
                 "A=M\n" +
@@ -30,14 +30,14 @@ public class Template {
                 "M=M-1\n" +
                 "A=M\n" +
                 "D=M-D\n" +
-                "@TRUE\n" +
+                "@TRUE"+cNum+"\n" +
                 "D;J"+op+"\n" +
                 "D=0\n" +
-                "@END\n" +
+                "@END"+cNum+"\n" +
                 "0;JMP\n" +
-                "(TRUE)\n" +
+                "(TRUE"+cNum+")\n" +
                 "D=-1\n" +
-                "(END)\n" +
+                "(END"+cNum+")\n" +
                 "@SP\n" +
                 "A=M\n" +
                 "M=D\n" +

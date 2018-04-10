@@ -33,7 +33,8 @@ public class CodeWriter {
     
     // Writes the assembly code that is the translation
     // of the given arithmetic command
-    public void writeArithmetic(String command) throws IOException{
+    public void writeArithmetic(String command, int cNum) throws IOException{
+        command=command.split(" ")[0].split("\n")[0];
         if(command.equals("add")){
             bw.append(Template.Arithmetic("+"));
         } else if(command.equals("sub")){
@@ -43,11 +44,11 @@ public class CodeWriter {
         } else if(command.equals("or")){
             bw.append(Template.Arithmetic("|"));
         } else if(command.equals("eq")){
-            bw.append(Template.Comparison("EQ"));
+            bw.append(Template.Comparison("EQ", cNum));
         } else if(command.equals("gt")){
-            bw.append(Template.Comparison("GT"));
+            bw.append(Template.Comparison("GT", cNum));
         } else if(command.equals("lt")){
-            bw.append(Template.Comparison("LT"));
+            bw.append(Template.Comparison("LT", cNum));
         } else if(command.equals("neg")){
             bw.append(Template.Bool("-"));
         } else if(command.equals("not")){
