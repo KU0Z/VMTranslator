@@ -18,10 +18,9 @@ public class VMTranslator {
      */
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
-        String inputPath = "C:\\Users\\Maynor\\Desktop\\Arqui\\Grupo_00-grupo_10-cf15225bdcb7361465c6d6685a4ac392824cabbc\\nand2tetris\\projects\\07\\MemoryAccess\\BasicTest\\BasicTest.vm";
+        String inputPath = "C:\\Users\\Maynor\\Desktop\\Arqui\\Grupo_00-grupo_10-cf15225bdcb7361465c6d6685a4ac392824cabbc\\nand2tetris\\projects\\07\\MemoryAccess\\StaticTest\\StaticTest.vm";
         Parser p = new Parser(inputPath);
-        CodeWriter cw = new CodeWriter(inputPath+".txt");
-        
+        CodeWriter cw = new CodeWriter(inputPath);
         int commandNumber = 0;
         
         do{

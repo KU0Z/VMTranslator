@@ -63,14 +63,12 @@ public class Template {
                 "M=M+1\n";
     }
     
-    // Push for any memory segment
+    // Push for any memory segment but constant nor static
     public static String Push(String segment, int constant){
         return "@"+segment+"\n" +
-                "A=M\n" +
-                "D=A\n" +
+                "D=M\n" +
                 "@"+constant+"\n" +
-                "D=D+A\n" +
-                "A=D\n" +
+                "A=D+A\n" +
                 "D=M\n" +
                 "@SP\n" +
                 "A=M\n" +
@@ -80,16 +78,67 @@ public class Template {
     }
     
     // Pop for any memory segment
-    public static String Pop(String segment, int constant){
+    public static String PopThisThat(String segment, int constant){
         return "@"+segment+"\n" +
-                "D=M\n" +
-                "@"+constant+"\n" +
-                "D=D+A\n" +
+                "D=A\n" +
+                "@R13\n" +
+                "M=D\n" +
                 "@SP\n" +
                 "AM=M-1\n" +
                 "D=M\n" +
                 "@R13\n" +
                 "A=M\n" +
-                "M=D";
+                "M=D\n";
+    }
+    
+    // Pop for THIS and THAT (Pointer)
+    public static String Pop(String segment, int constant){
+        return  "@"+segment+"\n"
+                + "D=M\n"
+                + "@"+constant+"\n"
+                + "D=D+A\n"
+                + "@R13\n"
+                + "M=D\n"
+                + "@SP\n"
+                + "AM=M-1\n"
+                + "D=M\n"
+                + "@R13\n"
+                + "A=M\n"
+                + "M=D\n";
+    }
+    
+    // Push for THIS and THAT (Pointer)
+    public static String PushPointer(String segment, int constant){
+        return "@"+segment+"\n" +
+                "D=M\n" +
+                "@SP\n" +
+                "A=M\n" +
+                "M=D\n" +
+                "@SP\n" +
+                "M=M+1\n";
+    }
+    
+    // Push for static
+    public static String PushStatic(String fileName, int constant){
+        return "@"+fileName+constant+"\n"
+                + "D=M\n"
+                + "@SP\n"
+                + "A=M\n"
+                + "M=D\n"
+                + "@SP\n"
+                + "M=M+1\n";
+    }
+    // Pop for static
+    public static String PopStatic(String fileName, int constant){
+        return "@"+fileName+constant+"\n"
+                + "D=A\n"
+                + "@R13\n"
+                + "M=D\n"
+                + "@SP\n"
+                + "AM=M-1\n"
+                + "D=M\n"
+                + "@R13\n"
+                + "A=M\n"
+                + "M=D\n";
     }
 }

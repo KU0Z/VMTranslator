@@ -6,6 +6,7 @@
 package vmtranslator;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -18,17 +19,20 @@ public class CodeWriter {
     // to write into it.
     FileWriter fw;
     BufferedWriter bw;
+    String FilePath;
     String FileName;
     public CodeWriter(String outputFile) throws IOException{
-        fw = new FileWriter(outputFile);
-        bw = new BufferedWriter(fw);
-        FileName  = outputFile;
+        this.setFileName(outputFile);
+        fw = new FileWriter(FilePath);
+        bw = new BufferedWriter(fw);        
     }
     
     //  Informs the code wrter that the translation of a
     // new VM file is started.
     public void setFileName(String fileName){
-        
+        File f = new File(fileName);
+        FilePath = fileName.substring(0, fileName.lastIndexOf('.'))+".asm";
+        FileName = new File(FilePath).getName().substring(0, new File(FilePath).getName().lastIndexOf("."));
     }
     
     // Writes the assembly code that is the translation
@@ -72,8 +76,14 @@ public class CodeWriter {
             }else if(segment.equals("that")){
                 bw.append(Template.Push("THAT", index));
             }else if(segment.equals("temp")){
-                bw.append(Template.Push("5", index));
-            }            
+                bw.append(Template.Push("5", index+5));
+            }else if(segment.equals("pointer") && index == 1){
+                bw.append(Template.PushPointer("THAT", index));
+            }else if(segment.equals("pointer") && index == 0){
+                bw.append(Template.PushPointer("THIS", index));
+            }else if(segment.equals("static")){
+                bw.append(Template.PushStatic(FileName, index));
+            }
         }else if(command == CommandType.C_POP){
             if(segment.equals("argument")){
                 bw.append(Template.Pop("ARG", index));
@@ -84,8 +94,14 @@ public class CodeWriter {
             }else if(segment.equals("that")){
                 bw.append(Template.Pop("THAT", index));
             }else if(segment.equals("temp")){
-                bw.append(Template.Pop("5", index));
-            } 
+                bw.append(Template.Pop("5", index+5));
+            }else if(segment.equals("pointer") && index == 1){
+                bw.append(Template.PopThisThat("THAT", index));
+            }else if(segment.equals("pointer") && index == 0){
+                bw.append(Template.PopThisThat("THIS", index));
+            }else if(segment.equals("static")){
+                bw.append(Template.PopStatic(FileName, index));
+            }
         }
     }
     
