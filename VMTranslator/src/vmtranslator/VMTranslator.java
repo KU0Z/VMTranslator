@@ -12,13 +12,7 @@ import java.io.IOException;
  * @author Maynor
  */
 public class VMTranslator {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) throws IOException {
-        // TODO code application logic here
-        String inputPath = "C:\\Users\\Maynor\\Desktop\\Arqui\\Grupo_00-grupo_10-cf15225bdcb7361465c6d6685a4ac392824cabbc\\nand2tetris\\projects\\07\\MemoryAccess\\StaticTest\\StaticTest.vm";
+    public void VMTranslate(String inputPath) throws IOException{
         Parser p = new Parser(inputPath);
         CodeWriter cw = new CodeWriter(inputPath);
         int commandNumber = 0;
@@ -41,6 +35,5 @@ public class VMTranslator {
         
        
         cw.Close();
-    }
-    
+    }    
 }
