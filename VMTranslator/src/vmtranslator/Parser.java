@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  *
@@ -19,6 +20,7 @@ public class Parser {
     private BufferedReader br;
     private String currentCommand = null;
     private String nextCommand = null;
+    public ArrayList<String> originalContent = new ArrayList<>();
     
     public String getCommand(){
         return currentCommand;
@@ -51,6 +53,7 @@ public class Parser {
     // current command.
     public void advance(){
         currentCommand = nextCommand;
+        originalContent.add(currentCommand);
     }
     
     // Returns the type of the current VM command,

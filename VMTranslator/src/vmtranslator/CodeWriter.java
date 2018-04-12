@@ -9,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  *
@@ -21,6 +22,7 @@ public class CodeWriter {
     BufferedWriter bw;
     String FilePath;
     String FileName;
+    StringBuilder translatedContent = new StringBuilder();
     public CodeWriter(String outputFile) throws IOException{
         this.setFileName(outputFile);
         fw = new FileWriter(FilePath);
@@ -41,23 +43,31 @@ public class CodeWriter {
         command=command.split(" ")[0].split("\n")[0];
         if(command.equals("add")){
             bw.append(Template.Arithmetic("+"));
+            translatedContent.append(Template.Arithmetic("+"));
         } else if(command.equals("sub")){
             bw.append(Template.Arithmetic("-"));
+            translatedContent.append(Template.Arithmetic("-"));
         } else if(command.equals("and")){
-            bw.append(Template.Arithmetic("&"));
+            translatedContent.append(Template.Arithmetic("&"));
         } else if(command.equals("or")){
-            bw.append(Template.Arithmetic("|"));
+            translatedContent.append(Template.Arithmetic("|"));
         } else if(command.equals("eq")){
             bw.append(Template.Comparison("EQ", cNum));
+            translatedContent.append(Template.Comparison("EQ", cNum));
         } else if(command.equals("gt")){
             bw.append(Template.Comparison("GT", cNum));
-        } else if(command.equals("lt")){
-            bw.append(Template.Comparison("LT", cNum));
+            translatedContent.append(Template.Comparison("GT", cNum));
         } else if(command.equals("neg")){
             bw.append(Template.Bool("-"));
+            translatedContent.append(Template.Bool("-"));
         } else if(command.equals("not")){
-            bw.append(Template.Bool("!"));
+            translatedContent.append(Template.Bool("!"));
+        } else if(command.equals("lt")){
+            bw.append(Template.Comparison("LT", cNum));
+            translatedContent.append(Template.Comparison("LT", cNum));
         }
+        //translatedContent.add("\n");
+        
     }
     
     // Writes the assembly code what is the translation
@@ -67,39 +77,56 @@ public class CodeWriter {
         if(command == CommandType.C_PUSH){
             if(segment.equals("constant")){
                 bw.append(Template.PushConstant(index));
+                translatedContent.append(Template.PushConstant(index));
             }else if(segment.equals("argument")){
+                translatedContent.append(Template.Push("ARG", index));
                 bw.append(Template.Push("ARG", index));
             }else if(segment.equals("local")){
+                translatedContent.append(Template.Push("LCL", index));
                 bw.append(Template.Push("LCL", index));
             }else if(segment.equals("this")){
+                translatedContent.append(Template.Push("THIS", index));
                 bw.append(Template.Push("THIS", index));
             }else if(segment.equals("that")){
+                translatedContent.append(Template.Push("THAT", index));
                 bw.append(Template.Push("THAT", index));
             }else if(segment.equals("temp")){
+                translatedContent.append(Template.Push("5", index+5));
                 bw.append(Template.Push("5", index+5));
             }else if(segment.equals("pointer") && index == 1){
+                translatedContent.append(Template.PushPointer("THAT", index));
                 bw.append(Template.PushPointer("THAT", index));
             }else if(segment.equals("pointer") && index == 0){
+                translatedContent.append(Template.PushPointer("THIS", index));
                 bw.append(Template.PushPointer("THIS", index));
             }else if(segment.equals("static")){
+                translatedContent.append(Template.PushStatic(FileName, index));
                 bw.append(Template.PushStatic(FileName, index));
             }
         }else if(command == CommandType.C_POP){
             if(segment.equals("argument")){
+                translatedContent.append(Template.Pop("ARG", index));
                 bw.append(Template.Pop("ARG", index));
             }else if(segment.equals("local")){
+                translatedContent.append(Template.Pop("LCL", index));
                 bw.append(Template.Pop("LCL", index));
             }else if(segment.equals("this")){
+                translatedContent.append(Template.Pop("THIS", index));
                 bw.append(Template.Pop("THIS", index));
             }else if(segment.equals("that")){
+                translatedContent.append(Template.Pop("THAT", index));
                 bw.append(Template.Pop("THAT", index));
             }else if(segment.equals("temp")){
+                translatedContent.append(Template.Pop("5", index+5));
                 bw.append(Template.Pop("5", index+5));
             }else if(segment.equals("pointer") && index == 1){
+                translatedContent.append(Template.PopThisThat("THAT", index));
                 bw.append(Template.PopThisThat("THAT", index));
             }else if(segment.equals("pointer") && index == 0){
+                translatedContent.append(Template.PopThisThat("THIS", index));
                 bw.append(Template.PopThisThat("THIS", index));
             }else if(segment.equals("static")){
+                translatedContent.append(Template.PopStatic(FileName, index));
                 bw.append(Template.PopStatic(FileName, index));
             }
         }
