@@ -48,8 +48,10 @@ public class CodeWriter {
             bw.append(Template.Arithmetic("-"));
             translatedContent.append(Template.Arithmetic("-"));
         } else if(command.equals("and")){
+            bw.append(Template.Arithmetic("&"));
             translatedContent.append(Template.Arithmetic("&"));
         } else if(command.equals("or")){
+            bw.append(Template.Arithmetic("|"));
             translatedContent.append(Template.Arithmetic("|"));
         } else if(command.equals("eq")){
             bw.append(Template.Comparison("EQ", cNum));
@@ -61,6 +63,7 @@ public class CodeWriter {
             bw.append(Template.Bool("-"));
             translatedContent.append(Template.Bool("-"));
         } else if(command.equals("not")){
+            bw.append(Template.Bool("!"));
             translatedContent.append(Template.Bool("!"));
         } else if(command.equals("lt")){
             bw.append(Template.Comparison("LT", cNum));
