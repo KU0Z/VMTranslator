@@ -28,7 +28,7 @@ Ubicar la carpeta que contiene el archivo JAR por medio del explorador de archiv
 \VMTranslator\dist\VMTranslator.jar
 ```
 Hacer doble clic sobre el ícono  <br>
-![enter image description here](https://picasaweb.google.com/115627711692469938617/6543612393075066289#6543612397710587570)
+![enter image description here](https://picasaweb.google.cerdoom/115627711692469938617/6543612393075066289#6543612397710587570)
 <br>
 Después de abierta la aplicación, debería mostrarse en pantalla algo similar a esto:  <br>
 ![enter image description here](https://lh3.googleusercontent.com/I60opFFXFx5OGO-P8I3TPCMiUNbSpTmhcBuJHkYx3R_lOS8U-bD1XFUcNdpTRvgPncMJmAeEVDL9)
@@ -40,7 +40,7 @@ Un archivo .vm puede ser cargado desde el menú *File* o dando clic sobre el íc
 Todo lo que debe hacer es seleccionar el archivo y hacer clic sobre el botón abrir.
 Inmediatamente después de haber abierto el archivo, se llenarán dos columnas que se verán similar a esto: <br>
 ![enter image description here](https://lh3.googleusercontent.com/gasCNzIcv7DOKlAf6Q3yEgQzQ7yIbsHS2t189PWN0ut0eDAK66UxZxgeAFF6QdY5acLe6oewOrAi)
-<br>![enter image description here](https://picasaweb.google.com/115627711692469938617/6543611107106404865#6543611104557644114)
+<br>
 Del lado izquierdo se muestra el archivo tal cual se cargó y del lado derecho se muestra una vista previa del código traducido a Assembly generado por el programa. En la parte inferior se muestra un mensaje indicando si el archivo contenía errores y el tiempo que tardó el programa en traducir a lenguaje máquina.
 
 ### Generando el archivo ".asm"
