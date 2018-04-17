@@ -38,6 +38,11 @@ public class Parser {
     public Boolean hasMoreCommands() throws IOException{
         String probNext = br.readLine();
         if(probNext != null){
+            if(probNext.contains("//")){
+                    probNext = probNext.substring(0, probNext.indexOf("//"));
+                }
+            probNext = probNext.trim();
+
             nextCommand = probNext;
             return true;
         }else{
@@ -52,6 +57,9 @@ public class Parser {
     // hasMoreCommands() is true. Initially there is no
     // current command.
     public void advance(){
+                
+        
+        
         currentCommand = nextCommand;
         originalContent.add(currentCommand);
     }
@@ -69,7 +77,9 @@ public class Parser {
                    || currentCommand.equals("and")|| currentCommand.equals("or")
                    || currentCommand.equals("not")){
                return CommandType.C_ARITHMETIC;
-           } 
+           }else if(tokens[0].equals("return")){
+                return CommandType.C_RETURN;
+            }
         } else if(nTokens == 2){
             if(tokens[0].equals("label")){
                return CommandType.C_LABEL;
@@ -87,9 +97,7 @@ public class Parser {
                 return CommandType.C_FUNCTION;
             } else if(tokens[0].equals("call")){
                 return CommandType.C_CALL;
-            } else if(tokens[0].equals("return")){
-                return CommandType.C_RETURN;
-            }
+            } 
         }
         
         return null;

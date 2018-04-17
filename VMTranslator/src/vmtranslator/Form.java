@@ -198,7 +198,7 @@ public class Form extends javax.swing.JFrame {
                 
                 
                 vmt = new VMTranslator();
-                vmt.VMTranslate(filePath);
+                vmt.VMTranslate(filePath, false);
                 
                 
                 

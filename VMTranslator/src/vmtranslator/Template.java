@@ -91,10 +91,18 @@ public class Template {
                 "M=D\n";
     }
     
+    public static String Init(){
+        return "@256\n"
+                + "D=A\n"
+                + "@SP\n"
+                + "M=D\n"
+                + CallFunction("Sys.init", 0, 0);
+    }
+    
     // Pop for THIS and THAT (Pointer 
     public static String Pop(String segment, int constant){
         return  "@"+segment+"\n"
-                + "D=M\n"
+                + ((segment.equals("R5"))? "D=A\n":"D=M\n")
                 + "@"+constant+"\n"
                 + "D=D+A\n"
                 + "@R13\n"
@@ -120,7 +128,7 @@ public class Template {
     
     // Push for static
     public static String PushStatic(String fileName, int constant){
-        return "@"+fileName+constant+"\n"
+        return "@"+fileName+"."+constant+"\n"
                 + "D=M\n"
                 + "@SP\n"
                 + "A=M\n"
@@ -130,7 +138,7 @@ public class Template {
     }
     // Pop for static
     public static String PopStatic(String fileName, int constant){
-        return "@"+fileName+constant+"\n"
+        return "@"+fileName+"."+constant+"\n"
                 + "D=A\n"
                 + "@R13\n"
                 + "M=D\n"
@@ -139,6 +147,109 @@ public class Template {
                 + "D=M\n"
                 + "@R13\n"
                 + "A=M\n"
+                + "M=D\n";
+    }
+    
+    // Label
+    public static String Label(String label){
+        return "("+label+")\n";
+    }
+    
+    // Goto
+    public static String GoTo(String label){
+        return "@"+label+"\n"
+                + "0;JMP\n";
+    }
+    
+    // If
+    public static String If(String label){
+        return "@SP\n"
+                + "AM=M-1\n"
+                + "D=M\n"
+                + "@"+label+"\n"
+                + "D;JGT\n"
+                + "D;JLT\n";
+    }
+    
+    // Push address for the function caller
+    public static String ReturnAddress(int num){
+        return "@RET_"+num+"\n"
+                + "D=A\n"
+                + "@SP\n"
+                + "A=M\n"
+                + "M=D\n"
+                + "@SP\n"
+                + "M=M+1\n";
+    }
+    
+    
+    // CallFunction
+    public static String CallFunction(String function, int nArgs, 
+            int commandNumber){
+        return ReturnAddress(commandNumber)+    // push return-address
+                PushPointer("LCL", 0)+          // push LCL
+                PushPointer("ARG", 0)+          // push ARG
+                PushPointer("THIS", 0)+         // push THIS
+                PushPointer("THAT", 0)+         // push THAT
+                "@"+(nArgs+5)+"\n"+             // Start repositioning ARG
+                "D=A\n"                            // ARG = SP-n-5
+                + "@SP\n"
+                + "D=M-D\n"
+                + "@ARG\n"
+                + "M=D\n"
+                + "@SP\n"                       // Start repositioning LCL
+                + "D=M\n"                           // LCL = SP
+                + "@LCL\n"
+                + "M=D\n"
+                + "@"+function+"\n"             // Transfer control
+                + "0;JMP\n"                         // goto f
+                + Label("RET_"+commandNumber);  // Declare a label for the return-address
+                                                   // (return-address)
+    }
+    
+    // Function
+    public static String Function(String functionName, int numLocals){
+       String output = Label(functionName);     // Declare a label for the function entry
+       for(int i = 0; i < numLocals; i++){      // Initialize each local variables with 0
+           output += PushConstant(0);
+       }
+       return output;               
+    }
+    
+    // return
+    public static String Return(){
+        return "@LCL\n"                         // FRAME is a temporary variable
+                + "D=M\n"
+                + "@R10\n"                        // frame
+                + "M=D\n"
+                + "@5\n"                        // Put the return-address in a temp var
+                + "A=D-A\n"
+                + "D=M\n"
+                + "@R9\n"
+                + "M=D\n"
+                + Pop("ARG", 0)                 // Reposition the return value for the caller // jañlksjefñalksdjfñalsdkjfñalskdjfñasd
+                + "@ARG\n"                      // Restores SP of the caller
+                + "D=M\n"
+                + "@SP\n"
+                + "M=D+1\n"
+                + segFrame("THAT", 1)     // Restore THAT of the caller
+                + segFrame("THIS", 2)     // Restore THIS of the caller
+                + segFrame("ARG", 3)       // Restore ARG of the caller
+                + segFrame("LCL", 4)       // Restore LCL of the caller
+                + "@R9\n"                  // Goto return-address (in the caller's code)
+                + "A=M\n"
+                + "0;JMP\n";        
+    }
+    
+    
+    // SEG = *(FRAME - k
+    public static String segFrame(String seg, int k){
+        return "@R10\n"
+                + "D=M\n"
+                + "@"+k+"\n"
+                + "A=D-A\n"
+                + "D=M\n"
+                + "@"+seg.toUpperCase()+"\n"
                 + "M=D\n";
     }
 }
