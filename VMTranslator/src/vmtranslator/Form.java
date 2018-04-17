@@ -176,10 +176,14 @@ public class Form extends javax.swing.JFrame {
 
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        this.Open();      
+        try {      
+            this.Open();
+        } catch (Exception ex) {
+            Logger.getLogger(Form.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void Open(){
+    private void Open() throws Exception{
         final JFileChooser fc = new JFileChooser();
         FileNameExtensionFilter asmFilter = new FileNameExtensionFilter("vm files (*.vm)", "vm");
         fc.addChoosableFileFilter(asmFilter);
@@ -228,7 +232,11 @@ public class Form extends javax.swing.JFrame {
         jTextArea1.setText(vmt.cw.translatedContent.toString());
     }
     private void OpenItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenItemActionPerformed
-        this.Open();
+        try {
+            this.Open();
+        } catch (Exception ex) {
+            Logger.getLogger(Form.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_OpenItemActionPerformed
 
     /**

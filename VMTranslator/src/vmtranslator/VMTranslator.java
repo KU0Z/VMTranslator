@@ -18,7 +18,7 @@ public class VMTranslator {
     public CodeWriter cw;
     public Parser p;
     public Boolean AddBootstrap;
-    public void VMTranslate(String inputPath, Boolean addBootstrap) throws IOException{
+    public void VMTranslate(String inputPath, Boolean addBootstrap) throws IOException, Exception{
         AddBootstrap = addBootstrap;
         if(new File(inputPath).isFile()){ // Its a file
             p = new Parser(inputPath);
@@ -70,6 +70,8 @@ public class VMTranslator {
                     vmFileList.add(inputPath+"\\"+fileList[i]);
                 }
             }
+            if(vmFileList.size()==0)
+                throw new Exception();
             if(this.AddBootstrap)
                 cw.writeinit();
             int commandNumber = 1;
